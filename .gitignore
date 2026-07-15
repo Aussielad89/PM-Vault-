@@ -1,0 +1,17 @@
+# Go
+bin/
+*.exe
+*.test
+*.out
+go.sum
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# PM-Vault runtime state
+.pokevault/
+*.jsonl
+*.log
