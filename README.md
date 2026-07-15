@@ -3,6 +3,7 @@
 [![Go Version](https://img.shields.io/badge/Go-1.25%2B-blue)](https://go.dev/dl/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![CI](https://github.com/Aussielad89/PM-Vault-/actions/workflows/ci.yml/badge.svg)](https://github.com/Aussielad89/PM-Vault-/actions/workflows/ci.yml)
+[![Gateway](https://img.shields.io/badge/Gateway-Local%20HTTP-orange)](pkg/gateway)
 
 **PM-Vault** is a local-first, zero-telemetry command-line application designed for collectors to digitize, price-track, and simulate investment scenarios for physical cards and sealed products using an agentic multi-source market evaluator.
 
@@ -81,6 +82,7 @@ Utilizes advanced layout rendering to project full-color terminal cell art, holo
 | Storage | JSON / JSONL |
 | Versioning | Git (via snapstock) |
 | Agents | Go-native jury (Python optional) |
+| Gateway | Local HTTP client for open market APIs |
 
 ---
 
@@ -224,11 +226,33 @@ PM-Vault runs entirely locally:
 2. **Zero-knowledge architecture** — ledger and binders are plain JSON files tracked by git
 3. **Local-only agents** — valuation jury runs without external API dependencies by default
 4. **Optional market integration** — scraper agent queries open APIs only when explicitly configured
-
----
+5. **Local HTTP gateway** — `pkg/gateway` provides a cached, timeout-bounded HTTP client for querying decentralized market APIs without exposing raw network traffic to external tools
 
 ## Project Structure
 
+```
+PM-Vault-/
+├── .github/workflows/ci.yml   # GitHub Actions CI
+├── cmd/pm/
+│   ├── main.go                # CLI entry point
+│   ├── init.go                # Vault initialization
+│   ├── add.go                 # Card acquisition entry
+│   ├── price.go               # Valuation jury orchestrator
+│   ├── snapshot.go            # Git-backed snapstock
+│   └── grid.go                # Bubble Tea grid launcher
+├── pkg/
+│   ├── ledger/                # JSON transaction storage
+│   ├── agents/                # Scraper, Arbitrator, Analyst jury
+│   ├── snapstock/             # History versioning
+│   ├── grid/                  # TUI model and ANSI rendering
+│   └── gateway/               # Local HTTP gateway for market APIs
+├── scripts/
+│   ├── build.sh               # Linux/macOS build script
+│   └── build.bat              # Windows build script
+├── go.mod
+├── go.sum
+├── LICENSE
+└── README.md
 ```
 PM-Vault-/
 ├── .github/workflows/ci.yml   # GitHub Actions CI

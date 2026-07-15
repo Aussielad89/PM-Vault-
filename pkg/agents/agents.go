@@ -57,11 +57,11 @@ func (j *Jury) Run(entries []Entry) (Report, error) {
 
 	for _, e := range entries {
 		base := scrapePrice(e)
-		adjusted := arbitrateCondition(base, e.Condition)
+		adjusted := ArbitrateCondition(base, e.Condition)
 		analystPrice, volatility, trend := analystForecast(base, adjusted)
 
 		consensus := (base + adjusted + analystPrice) / 3.0
-		confidence := calcConfidence(base, adjusted, analystPrice)
+		confidence := CalcConfidence(base, adjusted, analystPrice)
 
 		items = append(items, ItemResult{
 			Name:           e.Name,
@@ -101,7 +101,7 @@ func scrapePrice(e Entry) float64 {
 	return base
 }
 
-func arbitrateCondition(base float64, condition string) float64 {
+func ArbitrateCondition(base float64, condition string) float64 {
 	penalty := 0.0
 	switch condition {
 	case "Lightly-Played":
@@ -130,7 +130,7 @@ func analystForecast(base, adjusted float64) (float64, float64, string) {
 	return adjusted * (1.0 + (vol/100.0)*0.1), vol, trend
 }
 
-func calcConfidence(a, b, c float64) int {
+func CalcConfidence(a, b, c float64) int {
 	diff1 := math.Abs(a - b)
 	diff2 := math.Abs(b - c)
 	avg := (a + b + c) / 3.0
